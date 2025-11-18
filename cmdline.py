@@ -55,3 +55,20 @@ pipeline = prompt | llm | RunnableLambda(lambda resp: extract_score(resp.content
 
 emoji = pipeline.invoke({"country": country, "interest": interest})
 print(f"Your Trip Emoji: {emoji}")
+
+#==================================================================
+# CLI chain to convince non-pet people to leave the dark side and adopt a pet from a shelter
+prompt = ChatPromptTemplate.from_messages([
+    ("system","You are a highly skilled salesperson who left your job as a top performing salesperson to pursue your dream providing loving homes to shelter pets."),
+    ('human',"I currently don't want a pet, but deep down I'm lonely and need purpose"),
+    ("system","you also spent a few years in undergrad studying to become a consoler, you don't have a license and didn't finish your degree but you have knowledge and will use it to help this person see the good side of pet ownership."),
+    ("human","this is my reasoning not to adopt a pet: {reason} convince me otherwise")
+])
+
+reason = input("Welcome to the animal shelter, what is a reason you can't adopt a pet today?\n")
+
+pipeline3 = prompt | llm
+
+response = pipeline3.invoke({"reason":reason})
+
+print("\n"+response.content)
